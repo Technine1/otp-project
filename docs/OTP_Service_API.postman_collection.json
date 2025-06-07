@@ -1,0 +1,328 @@
+{
+	"info": {
+		"_postman_id": "0662c4d5-e826-4f3c-ad10-4b1a2fcbdc40",
+		"name": "OTP Service API",
+		"description": "Postman Collection for testing OTP service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17513425"
+	},
+	"item": [
+		{
+			"name": "Register User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=user2,password=secret,role=USER"
+				},
+				"url": {
+					"raw": "localhost:8080/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register Admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=admin4,password=secret,role=ADMIN"
+				},
+				"url": {
+					"raw": "localhost:8080/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=user1,password=secret"
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login Admin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"admin_token\", jsonData.token);",
+							"console.log(\"TOKEN SAVED:\", jsonData.token, pm.environment.get(\"admin_token\"));"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=admin1,password=secret"
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Generate OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "operationId=test123,channel=file"
+				},
+				"url": {
+					"raw": "localhost:8080/otp/generate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"otp",
+						"generate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate OTP",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "operationId=test123,code=123456"
+				},
+				"url": {
+					"raw": "localhost:8080/otp/validate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"otp",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update OTP Config (admin)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "codeLength=6,ttlSeconds=90"
+				},
+				"url": {
+					"raw": "localhost:8080/admin/config",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"config"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "List Users (admin)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{admin_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer{{admin_token}}",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/admin/users",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User (admin)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "text/plain"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{admin_token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "userId=2"
+				},
+				"url": {
+					"raw": "localhost:8080/admin/delete",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"admin",
+						"delete"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "admin_token",
+			"value": " {{admin_token}}"
+		}
+	]
+}

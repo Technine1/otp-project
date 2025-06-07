@@ -1,0 +1,41 @@
+# Maven
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+**/pom.xml.tag
+**/pom.xml.releaseBackup
+**/pom.xml.versionsBackup
+**/release.properties
+
+# Java
+*.class
+*.tmp
+*.out
+*.swp
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Environment config
+src/main/resources/*.properties
+!src/main/resources/application.properties
+!src/main/resources/db.properties.example
+
+# Test
+hs_err_pid*
+
+otp_code.txt
